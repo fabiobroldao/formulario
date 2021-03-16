@@ -48,22 +48,24 @@ class _FormularioState extends State<Formulario> {
                       height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 210,
+                        Expanded(
+                          flex: 6,
                           child: buildInput(
                             label: 'CEP',
                             textinput: TextInputType.text,
                           ),
                         ),
-                        TextButton.icon(
-                          icon: Icon(Icons.search),
-                          label: Text('Buscar CEP'),
-                          style: TextButton.styleFrom(
-                            primary: Colors.black,
+                        Expanded(
+                          flex: 4,
+                          child: TextButton.icon(
+                            icon: Icon(Icons.search),
+                            label: Text('Buscar CEP'),
+                            style: TextButton.styleFrom(
+                              primary: Colors.black,
+                            ),
+                            onPressed: () {},
                           ),
-                          onPressed: () {},
                         ),
                       ],
                     ),
@@ -71,19 +73,20 @@ class _FormularioState extends State<Formulario> {
                       height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 210,
-                          child: buildInput(
-                            label: 'Rua',
-                            textinput: TextInputType.text,
+                        Expanded(
+                          flex: 6,
+                          child: SizedBox(
+                            child: buildInput(
+                              label: 'Rua',
+                              textinput: TextInputType.text,
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: SizedBox(
-                            width: 124,
+                        Expanded(
+                          flex: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
                             child: buildInput(
                               label: 'Número',
                               textinput: TextInputType.text,
@@ -96,19 +99,18 @@ class _FormularioState extends State<Formulario> {
                       height: 10,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 167,
+                        Expanded(
+                          flex: 5,
                           child: buildInput(
                             label: 'Bairro',
                             textinput: TextInputType.text,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: SizedBox(
-                            width: 167,
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
                             child: buildInput(
                               label: 'Cidade',
                               textinput: TextInputType.text,
@@ -123,17 +125,17 @@ class _FormularioState extends State<Formulario> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 167,
+                        Expanded(
+                          flex: 5,
                           child: buildInput(
                             label: 'UF',
                             textinput: TextInputType.text,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: SizedBox(
-                            width: 167,
+                        Expanded(
+                          flex: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
                             child: buildInput(
                               label: 'Pais',
                               textinput: TextInputType.text,
