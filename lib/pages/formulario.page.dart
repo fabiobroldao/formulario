@@ -1,7 +1,32 @@
+import 'package:brasil_fields/brasil_fields.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Formulario extends StatefulWidget {
-  Formulario({Key? key}) : super(key: key);
+  final List<Map<String, String>>? pessoas;
+  final String? nome;
+  final String? email;
+  final String? cpf;
+  final String? cep;
+  final String? rua;
+  final String? numero;
+  final String? bairro;
+  final String? cidade;
+  final String? uf;
+  final String? pais;
+  Formulario(
+      {this.pessoas,
+      this.nome,
+      this.email,
+      this.cpf,
+      this.cep,
+      this.rua,
+      this.numero,
+      this.bairro,
+      this.cidade,
+      this.uf,
+      this.pais});
 
   @override
   _FormularioState createState() => _FormularioState();
@@ -9,6 +34,68 @@ class Formulario extends StatefulWidget {
 
 class _FormularioState extends State<Formulario> {
   var formKey = GlobalKey<FormState>();
+
+  String? nome;
+  String? email;
+  String? cpf;
+  String? cep;
+  String? rua;
+  String? numero;
+  String? bairro;
+  String? cidade;
+  String? uf;
+  String? pais;
+
+  void validaForm() {
+    if (!formKey.currentState!.validate()) {
+      showSnackBar(
+          'O formulário não foi corretamente preenchido! Revise os campos obrigatórios...');
+    } else {
+      showInfo();
+    }
+    formKey.currentState?.save();
+  }
+
+  void showInfo() async {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return SimpleDialog(
+          title: Text('Dados cadastrados com sucesso!'),
+          contentPadding: EdgeInsets.all(20),
+          children: [
+            Text('''
+Nome Completo:  $nome
+E-mail:         $email
+CPF:            $cpf
+CEP:            $cep
+Rua:            $rua
+Número:         $numero
+Bairro:         $bairro
+Cidade:         $cidade
+UF:             $uf
+Pais:           $pais
+            '''),
+          ],
+        );
+      },
+    );
+  }
+
+  void showSnackBar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          text,
+          style: TextStyle(
+            fontSize: 17,
+          ),
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.blue,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,21 +115,50 @@ class _FormularioState extends State<Formulario> {
                   children: [
                     buildInput(
                       label: 'Nome Completo',
+                      valorInicial: widget.nome,
                       textinput: TextInputType.text,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Não pode ser em branco.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => nome = value,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     buildInput(
                       label: 'Email',
-                      textinput: TextInputType.text,
+                      valorInicial: widget.email,
+                      textinput: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (!EmailValidator.validate(value!)) {
+                          return 'Precisa ser um e-mail válido';
+                        }
+
+                        return null;
+                      },
+                      onSaved: (value) => email = value,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     buildInput(
                       label: 'CPF',
-                      textinput: TextInputType.text,
+                      valorInicial: widget.cpf,
+                      textinput: TextInputType.number,
+                      inputFormater: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CpfInputFormatter(),
+                      ],
+                      validator: (value) {
+                        if (!UtilBrasilFields.isCPFValido(value!)) {
+                          return 'CPF Inválido';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) => cpf = value,
                     ),
                     SizedBox(
                       height: 10,
@@ -53,7 +169,20 @@ class _FormularioState extends State<Formulario> {
                           flex: 6,
                           child: buildInput(
                             label: 'CEP',
-                            textinput: TextInputType.text,
+                            valorInicial: widget.cep,
+                            textinput: TextInputType.number,
+                            inputFormater: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              CepInputFormatter(),
+                            ],
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'O CEP deve ser informado';
+                              }
+
+                              return null;
+                            },
+                            onSaved: (value) => cep = value,
                           ),
                         ),
                         Expanded(
@@ -79,7 +208,15 @@ class _FormularioState extends State<Formulario> {
                           child: SizedBox(
                             child: buildInput(
                               label: 'Rua',
+                              valorInicial: widget.rua,
                               textinput: TextInputType.text,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Não pode ser em branco.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => rua = value,
                             ),
                           ),
                         ),
@@ -89,7 +226,15 @@ class _FormularioState extends State<Formulario> {
                             padding: const EdgeInsets.only(left: 10),
                             child: buildInput(
                               label: 'Número',
+                              valorInicial: widget.numero,
                               textinput: TextInputType.text,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Não pode ser em branco.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => numero = value,
                             ),
                           ),
                         ),
@@ -104,7 +249,15 @@ class _FormularioState extends State<Formulario> {
                           flex: 5,
                           child: buildInput(
                             label: 'Bairro',
+                            valorInicial: widget.bairro,
                             textinput: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Não pode ser em branco.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) => bairro = value,
                           ),
                         ),
                         Expanded(
@@ -113,7 +266,15 @@ class _FormularioState extends State<Formulario> {
                             padding: const EdgeInsets.only(left: 10),
                             child: buildInput(
                               label: 'Cidade',
+                              valorInicial: widget.cidade,
                               textinput: TextInputType.text,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Não pode ser em branco.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => cidade = value,
                             ),
                           ),
                         ),
@@ -129,7 +290,15 @@ class _FormularioState extends State<Formulario> {
                           flex: 5,
                           child: buildInput(
                             label: 'UF',
+                            valorInicial: widget.uf,
                             textinput: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Não pode ser em branco.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) => uf = value,
                           ),
                         ),
                         Expanded(
@@ -138,7 +307,15 @@ class _FormularioState extends State<Formulario> {
                             padding: const EdgeInsets.only(left: 10),
                             child: buildInput(
                               label: 'Pais',
+                              valorInicial: widget.pais,
                               textinput: TextInputType.text,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Não pode ser em branco.';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) => pais = value,
                             ),
                           ),
                         ),
@@ -155,7 +332,7 @@ class _FormularioState extends State<Formulario> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () => validaForm(),
                       child: Text(
                         'Cadastrar',
                       ),
@@ -177,11 +354,19 @@ class _FormularioState extends State<Formulario> {
     required String label,
     TextEditingController? controller,
     bool obscureText = false,
+    required String? Function(String?) validator,
+    required void Function(String?) onSaved,
     required TextInputType textinput,
+    inputFormater,
+    String? valorInicial,
   }) {
     return TextFormField(
+      initialValue: valorInicial,
       controller: controller,
       obscureText: obscureText,
+      validator: validator,
+      onSaved: onSaved,
+      inputFormatters: inputFormater,
       decoration: InputDecoration(
         labelText: label,
         contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),

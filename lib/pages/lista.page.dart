@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formulario/pages/formulario.page.dart';
 
 class Lista extends StatefulWidget {
   @override
@@ -6,7 +7,7 @@ class Lista extends StatefulWidget {
 }
 
 class _ListaState extends State<Lista> {
-  final pessoas = [
+  final List pessoas = <Map<String, String>>[
     {
       'nome': 'Edson',
       'email': 'edson@gmail.com',
@@ -14,8 +15,8 @@ class _ListaState extends State<Lista> {
       'cep': '00000-000',
       'rua': 'Rua A',
       'numero': '1000',
-      'Bairro': 'Tijuca',
-      'Cidade': 'Rio de Janeiro',
+      'bairro': 'Tijuca',
+      'cidade': 'Rio de Janeiro',
       'uf': 'RJ',
       'pais': 'Brasil',
       'bgimg': 'https://robohash.org/1.png',
@@ -27,8 +28,8 @@ class _ListaState extends State<Lista> {
       'cep': '9999-000',
       'rua': 'Rua HH',
       'numero': '10',
-      'Bairro': 'Chui',
-      'Cidade': 'Jaguarao',
+      'bairro': 'Chui',
+      'cidade': 'Jaguarao',
       'uf': 'RS',
       'pais': 'Brasil',
       'bgimg': 'https://robohash.org/2.png',
@@ -40,8 +41,8 @@ class _ListaState extends State<Lista> {
       'cep': '00100-010',
       'rua': 'Rua WW',
       'numero': '99',
-      'Bairro': 'ABCD',
-      'Cidade': 'EFGHIJKL',
+      'bairro': 'ABCD',
+      'cidade': 'EFGHIJKL',
       'uf': 'BZ',
       'pais': 'Brasil',
       'bgimg': 'https://robohash.org/3.png',
@@ -56,17 +57,6 @@ class _ListaState extends State<Lista> {
         padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            /*Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/formulario');
-                  },
-                  child: Text('Inserir'),
-                ),
-              ],
-            ),*/
             SizedBox(
               height: 20,
             ),
@@ -82,7 +72,7 @@ class _ListaState extends State<Lista> {
   Widget buildList() {
     return ListView.separated(
       itemCount: pessoas.length,
-      itemBuilder: (context, index) {
+      itemBuilder: (ctx, index) {
         return ListTile(
           title: Text(pessoas[index]['nome'].toString()),
           subtitle: Column(
@@ -96,7 +86,19 @@ class _ListaState extends State<Lista> {
             backgroundImage: NetworkImage(pessoas[index]['bgimg'].toString()),
           ),
           onTap: () {
-            Navigator.of(context).pushNamed('/formulario');
+            Navigator.of(ctx).push(MaterialPageRoute(
+                builder: (_) => Formulario(
+                      nome: pessoas[index]['nome'].toString(),
+                      email: pessoas[index]['email'].toString(),
+                      cpf: pessoas[index]['cpf'].toString(),
+                      cep: pessoas[index]['cep'].toString(),
+                      rua: pessoas[index]['rua'].toString(),
+                      numero: pessoas[index]['numero'].toString(),
+                      bairro: pessoas[index]['bairro'].toString(),
+                      cidade: pessoas[index]['cidade'].toString(),
+                      uf: pessoas[index]['uf'].toString(),
+                      pais: pessoas[index]['pais'].toString(),
+                    )));
           },
           selected: false,
           enabled: true,
