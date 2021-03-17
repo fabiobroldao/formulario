@@ -9,6 +9,7 @@ class Lista extends StatefulWidget {
 class _ListaState extends State<Lista> {
   final List pessoas = <Map<String, String>>[
     {
+      'id': '1',
       'nome': 'Edson',
       'email': 'edson@gmail.com',
       'cpf': '000.000.000-00',
@@ -22,6 +23,7 @@ class _ListaState extends State<Lista> {
       'bgimg': 'https://robohash.org/1.png',
     },
     {
+      'id': '2',
       'nome': 'Gabriel',
       'email': 'gabriel@gmail.com',
       'cpf': '999.000.000-00',
@@ -35,6 +37,7 @@ class _ListaState extends State<Lista> {
       'bgimg': 'https://robohash.org/2.png',
     },
     {
+      'id': '3',
       'nome': 'Fabio',
       'email': 'fabio@gmail.com',
       'cpf': '001.001.001-00',
@@ -73,36 +76,85 @@ class _ListaState extends State<Lista> {
     return ListView.separated(
       itemCount: pessoas.length,
       itemBuilder: (ctx, index) {
-        return ListTile(
-          title: Text(pessoas[index]['nome'].toString()),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(pessoas[index]['email'].toString()),
-              Text(pessoas[index]['cpf'].toString()),
-            ],
+        final pessoa = pessoas[index];
+        return Dismissible(
+          key: ValueKey(pessoa['id']),
+          background: Container(
+            color: Colors.red,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.delete,
+                  size: 40,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Deletando...',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
           ),
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(pessoas[index]['bgimg'].toString()),
+          secondaryBackground: Container(
+            color: Colors.green,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(
+                  Icons.archive,
+                  size: 40,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  'Arquivando...',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
           ),
-          onTap: () {
-            Navigator.of(ctx).push(MaterialPageRoute(
-                builder: (_) => Formulario(
-                      nome: pessoas[index]['nome'].toString(),
-                      email: pessoas[index]['email'].toString(),
-                      cpf: pessoas[index]['cpf'].toString(),
-                      cep: pessoas[index]['cep'].toString(),
-                      rua: pessoas[index]['rua'].toString(),
-                      numero: pessoas[index]['numero'].toString(),
-                      bairro: pessoas[index]['bairro'].toString(),
-                      cidade: pessoas[index]['cidade'].toString(),
-                      uf: pessoas[index]['uf'].toString(),
-                      pais: pessoas[index]['pais'].toString(),
-                    )));
+          onDismissed: (direction) {
+            print('Pessoa deletada!');
           },
-          selected: false,
-          enabled: true,
-          isThreeLine: false,
+          confirmDismiss: (direction) async {
+            return true;
+          },
+          child: ListTile(
+            title: Text(pessoas[index]['nome'].toString()),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(pessoas[index]['email'].toString()),
+                Text(pessoas[index]['cpf'].toString()),
+              ],
+            ),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(pessoas[index]['bgimg'].toString()),
+            ),
+            onTap: () {
+              Navigator.of(ctx).push(MaterialPageRoute(
+                  builder: (_) => Formulario(
+                        nome: pessoas[index]['nome'].toString(),
+                        email: pessoas[index]['email'].toString(),
+                        cpf: pessoas[index]['cpf'].toString(),
+                        cep: pessoas[index]['cep'].toString(),
+                        rua: pessoas[index]['rua'].toString(),
+                        numero: pessoas[index]['numero'].toString(),
+                        bairro: pessoas[index]['bairro'].toString(),
+                        cidade: pessoas[index]['cidade'].toString(),
+                        uf: pessoas[index]['uf'].toString(),
+                        pais: pessoas[index]['pais'].toString(),
+                      )));
+            },
+            selected: false,
+            enabled: true,
+            isThreeLine: false,
+          ),
         );
       },
       separatorBuilder: (context, index) {
