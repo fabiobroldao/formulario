@@ -22,7 +22,7 @@ class _LoginState extends State<Login> {
 
     formKey.currentState?.save();
 
-    Navigator.of(context).pushNamed('/lista');
+    Navigator.of(context).pushReplacementNamed('/lista');
   }
 
   void showFailureLogin() async {
