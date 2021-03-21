@@ -149,6 +149,7 @@ class _ListaState extends State<Lista> {
                         cidade: pessoas[index]['cidade'].toString(),
                         uf: pessoas[index]['uf'].toString(),
                         pais: pessoas[index]['pais'].toString(),
+                        bgimg: pessoas[index]['bgimg'].toString(),
                       )));
             },
             selected: false,

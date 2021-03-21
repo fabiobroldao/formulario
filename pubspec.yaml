@@ -31,6 +31,8 @@ dependencies:
   font_awesome_flutter: ^9.0.0-nullsafety
   brasil_fields: ^1.1.1
   email_validator: ^2.0.0-nullsafety
+  image_picker: ^0.7.3
+  dio: ^4.0.0-prev3
 
 dev_dependencies:
   flutter_test:
